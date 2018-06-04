@@ -1,0 +1,307 @@
+\documentclass[paper=a4,11pt,parskip=half,toc=listof]{scrartcl}
+
+% % % % % LANGUAGE % % % %
+\usepackage{etoolbox} % Allow advanced, programming-like commands like \newtoggle
+\newtoggle{german} % Make your choic here
+%\togglefalse{german} % English
+\toggletrue{german} % German
+% % % % % \LANGUAGE % % % %
+
+\usepackage[utf8]{inputenc} % input files werden als utf8 interpretiert
+\usepackage[T1]{fontenc} % die schriftart wird mit T1 codiert (will man haben)
+
+\iftoggle{german}{
+\usepackage[ngerman]{babel} % Deutsche Sprachanpassungen
+\usepackage[german=quotes]{csquotes} % Anfuehrungszeichen
+}{
+\usepackage[english]{babel} % Deutsche Sprachanpassungen
+\usepackage[english=american]{csquotes} % Anfuehrungszeichen
+}
+\usepackage[resetlabels,labeled]{multibib}
+%% The new list's label is "New" and will be titled "The other list".
+%% To put cites into this list, use \citeNew.
+\newcites{New}{The other list}
+
+\usepackage{scrpage2}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{color}
+\usepackage{textcomp}
+\usepackage{mathtools}
+\usepackage{nicefrac}
+\usepackage{amsmath}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{ltxtable}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{colortbl}
+\usepackage{hhline}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[font=small]{caption} % very thin
+\usepackage{subcaption}
+\usepackage{picinpar}
+\usepackage{fancybox}
+\usepackage{pgfkeys}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\usepackage[edges]{forest}%dir tree
+\definecolor{folderbg}{RGB}{124,166,198}
+\definecolor{folderborder}{RGB}{110,144,169} 
+\definecolor{folderbg}{RGB}{124,166,198}
+\definecolor{folderborder}{RGB}{110,144,169}
+\newlength\Size
+\setlength\Size{4pt}
+\tikzset{%
+  folder/.pic={%
+    \filldraw [draw=folderborder, top color=folderbg!50, bottom color=folderbg] (-1.05*\Size,0.2\Size+5pt) rectangle ++(.75*\Size,-0.2\Size-5pt);
+    \filldraw [draw=folderborder, top color=folderbg!50, bottom color=folderbg] (-1.15*\Size,-\Size) rectangle (1.15*\Size,\Size);
+  },
+  file/.pic={%
+    \filldraw [draw=folderborder, top color=folderbg!5, bottom color=folderbg!10] (-\Size,.4*\Size+5pt) coordinate (a) |- (\Size,-1.2*\Size) coordinate (b) -- ++(0,1.6*\Size) coordinate (c) -- ++(-5pt,5pt) coordinate (d) -- cycle (d) |- (c) ;
+  },
+}
+
+\forestset{%
+  declare autowrapped toks={pic me}{},
+  declare boolean register={pic root},
+  pic root=0,
+  pic dir tree/.style={%
+    for tree={%
+      folder,
+      font=\ttfamily,
+      grow'=0,
+    },
+    before typesetting nodes={%
+      for tree={%
+        edge label+/.option={pic me},
+      },
+      if pic root={
+        tikz+={
+          \pic at ([xshift=\Size].west) {folder};
+        },
+        align={l}
+      }{},
+    },
+  },
+  pic me set/.code n args=2{%
+    \forestset{%
+      #1/.style={%
+        inner xsep= 2\Size,
+        pic me={pic {#2}},
+      }
+    }
+  },
+  pic me set={directory}{folder},
+  pic me set={file}{file},
+}
+
+% XML Listing options
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{lightblue}{rgb}{0.0,0.0,0.9}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  showstringspaces=false,
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},      % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=none,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                   % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title  
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[s][\color{mauve}]{"}{"},
+  morestring=[s][\color{black}]{>}{<},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s][\color{dkgreen}]{<!--}{-->},
+  stringstyle=\color{black},
+  identifierstyle=\color{lightblue},
+  keywordstyle=\color{red},
+  morekeywords={xmlns,xsi,noNamespaceSchemaLocation,type,id,x,y,source,target,version,tool,transRef,roleRef,objective,eventually}% list your attributes here
+}
+
+% No footnotes on the next page please
+\interfootnotelinepenalty=10000
+
+%opening
+\def\ThesisUniversityCourse{IS Medieninformatik B.Sc.}
+\def\ThesisSemester{Winter Semester 2017/2018}
+\def\ThesisTitle{My fantasic thesis title, which is the best title in the world}
+\def\ThesisAuthor{Max Mustermann}
+\def\ThesisLocation{Bremen}
+\def\ThesisType{Bachelor}
+\def\ThesisPubDate{\today} % Change here to the date you are going to print your thesis
+\def\ThesisFirstSupervisor{Prof. Dr. ABC}
+\def\ThesisSecondSupervisor{Dipl.-Inf. EDF}
+\def\ThesisExternalSupervisor{Dipl.-Inf. HIJ}
+\def\ThesisExternalCompany{My company}
+\def\ThesisSubject{}
+
+
+\usepackage{todonotes}
+\usepackage{pdfpages} % directly include pdf pages
+\usepackage{algorithmic} % pseudo-code
+\usepackage{blindtext}
+%\usepackage[printonlyused]{acronym} 
+\usepackage{acronym} 
+%\usepackage[firstpage]{draftwatermark} % comment in if you submit a draf. 
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+% new types for a table
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcommand{\specialcell}[2][l]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+  
+\iftoggle{german}{}{
+% Define date format
+\usepackage[us]{datetime}
+\newdateformat{germandate}{\THEDAY. \monthname[\THEMONTH] \THEYEAR}
+}
+\newcommand*{\quelle}{% 
+  \footnotesize Quelle: 
+} 
+
+
+%%%% Font %%%%
+% \usepackage{times} % times in text
+\usepackage{lmodern} % better font, fork of computer modern
+\usepackage{mathptmx} % times in math
+\usepackage{setspace} \onehalfspacing %
+\usepackage[paper=a4paper]{geometry}
+\setlength{\parindent}{0pt} % no indent
+\setlength{\headheight}{1.1\baselineskip}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{4}
+%%%% Font %%%%
+
+%%%% footer and header %%%%
+\usepackage{scrpage2}%
+\pagestyle{scrheadings}%  S
+\clearscrheadfoot% 
+\setheadwidth{text}%
+\automark{section}% 
+\ohead{\textbf{\pagemark}}
+\renewcommand{\sectionmark}[1]{\markright{\ #1}} 
+\ihead{\textbf{\rightmark}}
+\setheadsepline{0.5pt}
+%%%% \footer and header %%%%
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+%% Prevent "underfull \hbox" warnings in bibliography,
+%% use only when needed. There are two possibilities:
+% 1.align text left:
+%\usepackage{ragged2e}
+%\apptocmd{\thebibliography}{\RaggedRight}{}{}
+% 2. relax the restrictions (may break something):
+\apptocmd{\sloppy}{\hbadness 10000\relax}{}{}
+
+
+\usepackage[bookmarks=true]{hyperref}
+\hypersetup{
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={\ThesisTitle},    % title
+    pdfauthor={\ThesisAuthor},     % author
+    pdfsubject={\ThesisTitle},   % subject of the document
+    pdfcreator={\ThesisAuthor},   % creator of the document
+    pdfproducer={\ThesisAuthor}, % producer of the document
+    pdfkeywords={802.11} {DCF} {long-distance} {modeling}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=false,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+\definecolor{boxGrey}{rgb}{0.9,0.9,0.9}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%% Startseite %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{titlepage}
+\newgeometry{top=4cm, bottom=3cm, left=4.5cm, right=3cm}
+
+\include{chapter/erklaerung}
+\pagenumbering{Roman} % Big roman numbers until the text begins
+\addtocontents{toc}{\protect\markright{}}
+
+\setcounter{page}{3} % inhaltsverzeichnis beginnt auf seite 3
+\begin{spacing}{1.14} % set me to something nice when ready
+\tableofcontents
+\end{spacing}
+
+\clearpage{}
+
+
+%%%%%%%%%%%%%%%%%%%%% Startseite %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{tocdepth}{4} 
+\setcounter{secnumdepth}{4}
+
+\pagenumbering{arabic} % arabic numbers for the main part
+\nocite{*}
+% Here the chapters are included
+\include{chapter/abstract} % abstract
+\include{chapter/introduction} % introduction
+\include{chapter/fundamentals} % fundamentals
+\include{chapter/existing_solutions} % existing solutions
+\include{chapter/concept} % concept
+\include{chapter/prototype} % prototype
+\include{chapter/evaluation} % evaluation
+\include{chapter/conclusion} % conclusion
+\listoftables % add list of tables
+\clearpage{}
+\listoffigures % add list of figures 
+\clearpage{}
+\lstlistoflistings
+\clearpage{}
+\include{acronym} % include the acronym thing
+\clearpage{}
+% choose your type of citation here
+%\bibliographystyle{plainnat} % author and year
+%\bibliographystyle{amsalpha} % author and year short
+\bibliographystyle{alphaabbr} % author short and year
+%\bibliographystyle{alpha} % author and year
+%\bibliographystyle{plain} % only numbers
+%\bibliographystyle{unibonn_ay} % a special file used for the uni bonn
+\singlespacing % bibliography with single spacing
+% \nocite{*} % print all references in bib file regardless of citing
+\bibliography{references}
+\addcontentsline{toc}{section}{Literaturverzeichnis}
+% Start of the appendix
+\appendix 
+% The appendix is a chapter
+\include{chapter/appendix}
+\end{document}

@@ -1,0 +1,25 @@
+\iftoggle{german}{
+\def\AbbrvName{Abkürzungsverzeichnis}
+}{
+\def\AbbrvName{List of Abbreviations}
+}
+\section*{\AbbrvName}
+\addcontentsline{toc}{section}{\AbbrvName}
+\sectionmark{\AbbrvName}
+
+\def\LongestAcro{wmSDN}
+\begin{acronym}[\LongestAcro] % Pass the longest acronym here to align them correctly
+\setlength{\itemsep}{-\parsep} % reduce the space between acronyms
+ \acro{TA}{Test Automation}
+ \acro{OS}{Operating System - Betriebssystem}
+ \acro{BPMN}{Business Process Model and Notation - Eine grafische Spezifikationssprache in der Wirtschaftsinformatik und im Prozessmanagement}
+ \acro{ISTQB}{International Software Testing Qualifications Board (http://www.istqb.org/)}
+ \acro{XML}{„Extensible Markup Language“ - erweiterbare Auszeichnungssprache zur Darstellung hierarchisch strukturierter Daten in Form von Text}
+ \acro{AE}{Automation Engine - Bestandteil der CA Automic Workload Automation }
+ \acro{AWA}{CA Automic Workload Automation}
+ \acro{VARA}{Variablen-Objekt der AWA, welches einen Schlüsselwert mit fünf dazugehörigen Werten speichert}
+  \acro{b4A}{Kurzform für die Software b4Automic Solution}
+ \acro{JOB}{Ausführbares-Objekt der AWA, was benutzt wird um z.B. OS Operationen auszuführen}
+ \acro{USER}{Benutzer-Objekt der AWA}
+\end{acronym}
+
